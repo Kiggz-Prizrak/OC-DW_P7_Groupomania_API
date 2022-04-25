@@ -10,6 +10,10 @@ const user = require('./User')(sequelize, Sequelize.DataTypes);
 
 sequelize.User = user;
 
+const post = require('./Post')(sequelize, Sequelize.DataTypes);
+
+sequelize.Post = post;
+
 sequelize.authenticate()
   .then(() => console.log('Connection has been established successfully.'))
   .catch((error) => console.error('Unable to connect to the database:', error));

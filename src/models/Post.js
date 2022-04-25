@@ -1,7 +1,7 @@
 module.exports = (Sequelize, DataTypes) =>
   // eslint-disable-next-line implicit-arrow-linebreak
   Sequelize.define(
-    'Comment',
+    'Post',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -24,7 +24,7 @@ module.exports = (Sequelize, DataTypes) =>
     },
     // on indique le nom de table
     {
-      tableName: 'comments',
+      tableName: 'posts',
       timestamps: true,
     },
   );
