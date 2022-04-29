@@ -2,10 +2,11 @@ const express = require('express');
 
 const app = express();
 
-const path = require('path');
-
 const usersRoutes = require('./routes/users');
 const postsRoutes = require('./routes/posts');
+const commentsRoutes = require('./routes/comments');
+const reactionsRoutes = require('./routes/reactions');
+const reportsRoutes = require('./routes/reports');
 
 app.use(express.json());
 app.use((req, res, next) => {
@@ -19,5 +20,8 @@ app.use((req, res, next) => {
 
 app.use('/api/users', usersRoutes);
 app.use('/api/posts', postsRoutes);
+app.use('/api/comments', commentsRoutes);
+app.use('/api/reactions', reactionsRoutes);
+app.use('/api/reports', reportsRoutes);
 
 module.exports = app;

@@ -54,18 +54,31 @@ exports.signup = async (req, res) => {
   delete req.body.isAdmin;
 
   // création de l'user
-  const user = User.create({
-    isAdmin: false,
-    email: req.body.email,
-    password: hash,
-    username: req.body.username,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    avatar: `${req.protocol}://${req.get('host')}/images/${req.files.avatar[0].filename}`,
-  });
-  if (user) {
-    return res.status(201).json({ message: 'Utilisateur créé' });
+  if (!req.files) {
+    const defaultAvatar = 'http://localhost/images/default_avatar.png';
+    const user = User.create({
+      isAdmin: false,
+      email: req.body.email,
+      password: hash,
+      username: req.body.username,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      avatar: defaultAvatar,
+    });
+    if (user) return res.status(201).json({ message: 'Utilisateur créé' });
+  } else {
+    const user = User.create({
+      isAdmin: false,
+      email: req.body.email,
+      password: hash,
+      username: req.body.username,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      avatar: `${req.protocol}://${req.get('host')}/images/${req.files.avatar[0].filename}`,
+    });
+    if (user) return res.status(201).json({ message: 'Utilisateur créé' });
   }
+
   if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
   return res.status(404).json({ message: 'Error' });
 };
@@ -111,7 +124,9 @@ exports.login = async (req, res) => {
 
 // Get all users
 exports.getAllUsers = async (req, res) => {
-  const users = await User.findAll()
+  const users = await User.findAll({
+    order: [['createdAt', 'DESC']],
+  })
     .catch((error) => res.status(404).json({ error }));
   return res.status(200).json(users);
 };

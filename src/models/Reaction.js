@@ -21,10 +21,6 @@ module.exports = (Sequelize, DataTypes) =>
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      content: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
       type: {
         type: DataTypes.STRING,
         allowNull: true,
