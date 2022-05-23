@@ -38,9 +38,4 @@ module.exports = (Sequelize, DataTypes) =>
         allowNull: false,
       },
     },
-    // on indique le nom de table
-    {
-      tableName: 'users',
-      timestamps: true,
-    },
   );

@@ -1,10 +1,15 @@
 // connexion sequalize
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
-  host: process.env.DB_HOST,
-  dialect: 'mysql',
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+  },
+);
 
 const user = require('./User')(sequelize, Sequelize.DataTypes);
 const post = require('./Post')(sequelize, Sequelize.DataTypes);
@@ -46,7 +51,7 @@ sequelize
   .then(async () => {
     console.log('✅ Connexion à MySQL valide');
     // Synchronisation des models avec les tables dans la base de données
-    await sequelize.sync({ alter: true })
+    await sequelize.sync({ alter: true/* , force: true */ })
       .catch(() => console.log('Impossible de synchroniser les models'));
     console.log('Tous les models ont été synchronisés avec succès.');
   })

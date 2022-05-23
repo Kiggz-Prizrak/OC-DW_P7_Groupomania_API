@@ -3,16 +3,6 @@ module.exports = (Sequelize, DataTypes) =>
   Sequelize.define(
     'Post',
     {
-      id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
       content: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -21,10 +11,5 @@ module.exports = (Sequelize, DataTypes) =>
         type: DataTypes.STRING,
         allowNull: true,
       },
-    },
-    // on indique le nom de table
-    {
-      tableName: 'posts',
-      timestamps: true,
     },
   );

@@ -2,6 +2,8 @@ const express = require('express');
 
 const app = express();
 
+app.use('/images', express.static('./images'));
+
 const usersRoutes = require('./routes/users');
 const postsRoutes = require('./routes/posts');
 const commentsRoutes = require('./routes/comments');
