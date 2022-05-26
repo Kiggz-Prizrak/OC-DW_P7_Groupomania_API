@@ -51,7 +51,7 @@ sequelize
   .then(async () => {
     console.log('✅ Connexion à MySQL valide');
     // Synchronisation des models avec les tables dans la base de données
-    await sequelize.sync({ alter: true/* , force: true */ })
+    await sequelize.sync()
       .catch(() => console.log('Impossible de synchroniser les models'));
     console.log('Tous les models ont été synchronisés avec succès.');
   })

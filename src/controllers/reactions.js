@@ -1,4 +1,4 @@
-const { Reaction } = require('../models');
+const { Reaction, Post, User, Comment } = require('../models');
 
 // add Reaction
 exports.createReaction = async (req, res) => {
@@ -13,8 +13,8 @@ exports.createReaction = async (req, res) => {
   }
 
   if (
-    typeof req.body.PostId === 'string' ||
-    typeof req.body.CommentId === 'string'
+    typeof req.body.PostId === 'string'
+    || typeof req.body.CommentId === 'string'
   ) {
     return res
       .status(400)
@@ -22,8 +22,8 @@ exports.createReaction = async (req, res) => {
   }
 
   if (
-    typeof req.body.PostId === 'number' &&
-    typeof req.body.CommentId === 'number'
+    typeof req.body.PostId === 'number'
+    && typeof req.body.CommentId === 'number'
   ) {
     return res
       .status(400)

@@ -1,5 +1,5 @@
 const { promises: fs } = require('fs');
-const { Comment } = require('../models');
+const { Comment, User, Reaction } = require('../models');
 
 exports.createComment = async (req, res) => {
   if (typeof req.body.content !== 'string') {
@@ -32,6 +32,18 @@ exports.createComment = async (req, res) => {
 // Get all comments
 exports.getAllComments = async (req, res) => {
   const comment = await Comment.findAll({
+    include: [
+      {
+        model: User,
+        attributes: ['username', 'firstName', 'lastName', 'avatar'],
+      },
+      {
+        model: Comment,
+      },
+      {
+        model: Reaction,
+      },
+    ],
     order: [['createdAt', 'DESC']],
   }).catch((error) => res.status(404).json({ error }));
   return res.status(200).json(comment);
@@ -39,9 +51,21 @@ exports.getAllComments = async (req, res) => {
 
 // Get one Comment
 exports.getOneComment = async (req, res) => {
-  const comment = await Comment.findOne({ where: { id: req.params.id } }).catch(
-    (error) => res.status(400).json({ error }),
-  );
+  const comment = await Comment.findOne({
+    include: [
+      {
+        model: User,
+        attributes: ['username', 'firstName', 'lastName', 'avatar'],
+      },
+      {
+        model: Comment,
+      },
+      {
+        model: Reaction,
+      },
+    ],
+    where: { id: req.params.id },
+  }).catch((error) => res.status(400).json({ error }));
   return res.status(200).json(comment);
 };
 

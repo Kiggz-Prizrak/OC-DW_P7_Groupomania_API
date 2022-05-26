@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { promises: fs } = require('fs');
-const { User } = require('../models');
+const { User, Post, Comment, Reaction } = require('../models');
 
 // Création de l'user
 exports.signup = async (req, res) => {
@@ -24,11 +24,11 @@ exports.signup = async (req, res) => {
   }
 
   if (
-    typeof req.body.email !== 'string'
-    || typeof userObject.password !== 'string'
-    || typeof userObject.username !== 'string'
-    || typeof userObject.lastName !== 'string'
-    || typeof userObject.firstName !== 'string'
+    typeof req.body.email !== 'string' ||
+    typeof userObject.password !== 'string' ||
+    typeof userObject.username !== 'string' ||
+    typeof userObject.lastName !== 'string' ||
+    typeof userObject.firstName !== 'string'
   ) {
     if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
     return res.status(400).json({ message: 'Please provide valid data' });
@@ -107,20 +107,20 @@ exports.signup = async (req, res) => {
 // Connexion de l'user
 exports.login = async (req, res) => {
   if (
-    typeof req.body.email !== 'string'
-    || typeof req.body.password !== 'string'
+    typeof req.body.email !== 'string' ||
+    typeof req.body.password !== 'string'
   ) {
     if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
     if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
     return res.status(400).json({ message: 'please provides valid data' });
   }
 
-  const user = await User.findOne({ where: { email: req.body.email } }).catch(
-    async (error) => {
-      res.status(500).json({ message: 'An error has occurred' });
-      if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
-    },
-  );
+  const user = await User.findOne({
+    where: { email: req.body.email },
+  }).catch(async (error) => {
+    res.status(500).json({ message: 'An error has occurred' });
+    if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
+  });
   if (!user) {
     if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
     return res.status(404).json({ message: 'no user match with this mail' });
@@ -155,9 +155,41 @@ exports.getAllUsers = async (req, res) => {
 
 // Get one User
 exports.getOneUser = async (req, res) => {
-  const user = await User.findOne({ where: { id: req.params.id } }).catch(
-    (error) => res.status(404).json({ message: 'user not found' }),
-  );
+  const user = await User.findOne({
+    include: [
+      {
+        model: Post,
+        include: [
+          {
+            model: Comment,
+            include: [
+              {
+                model: Reaction,
+              },
+              {
+                model: User,
+                attributes: ['username', 'firstName', 'lastName', 'avatar'],
+              },
+            ],
+          },
+          {
+            model: Reaction,
+          },
+          {
+            model: User,
+            attributes: ['username', 'firstName', 'lastName', 'avatar'],
+          },
+        ],
+      },
+      {
+        model: Comment,
+      },
+      {
+        model: Reaction,
+      },
+    ],
+    where: { id: req.params.id },
+  }).catch((error) => res.status(404).json({ message: 'user not found' }));
   return res.status(200).json(user);
 };
 
@@ -192,11 +224,11 @@ exports.modifyUser = async (req, res) => {
 
   const userObject = req.files
     ? {
-      ...req.body,
-      avatar: `${req.protocol}://${req.get('host')}/images/${
-        req.files.avatar[0].filename
-      }`,
-    }
+        ...req.body,
+        avatar: `${req.protocol}://${req.get('host')}/images/${
+          req.files.avatar[0].filename
+        }`,
+      }
     : req.body;
 
   // vérification de l'e-mail
@@ -216,8 +248,8 @@ exports.modifyUser = async (req, res) => {
   // cryptage du mot de passe
   userObject.password = await bcrypt.hash(req.body.password, 10);
   if (
-    typeof userObject.email !== 'string'
-    || typeof userObject.password !== 'string'
+    typeof userObject.email !== 'string' ||
+    typeof userObject.password !== 'string'
   ) {
     if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
     return res.status(400).json({ message: 'please provides all fields' });
@@ -246,6 +278,7 @@ exports.deleteUser = async (req, res) => {
   const filename = user.avatar.split('/images/')[1];
   await fs.unlink(`images/${filename}`);
   await User.destroy({ where: { id: req.params.id } }).catch((error) =>
-    res.status(400).json({ error }));
+    res.status(400).json({ error }),
+  );
   return res.status(200).json({ message: 'Objet supprimé !' });
 };

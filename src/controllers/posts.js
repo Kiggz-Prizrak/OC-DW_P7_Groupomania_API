@@ -2,21 +2,6 @@ const { promises: fs } = require('fs');
 const { Post, User, Comment, Reaction } = require('../models');
 const { getAllUsers } = require('./users');
 
-const postIncludeInfo = {
-  include: [
-    {
-      model: User,
-      attributes: ['username', 'firstName', 'lastName', 'avatar'],
-    },
-    {
-      model: Comment,
-    },
-    {
-      model: Reaction,
-    },
-  ],
-};
-
 // Post
 exports.createPost = async (req, res) => {
   // const postObject = req.body;
