@@ -23,18 +23,18 @@ sequelize.Comment = comment;
 sequelize.Reaction = reaction;
 sequelize.Report = report;
 
-user.hasMany(post);
-user.hasMany(comment);
-user.hasMany(reaction);
-user.hasMany(report);
+user.hasMany(post, { onDelete: 'cascade', onUpdate: 'cascade' });
+user.hasMany(comment, { onDelete: 'cascade', onUpdate: 'cascade' });
+user.hasMany(reaction, { onDelete: 'cascade', onUpdate: 'cascade' });
+user.hasMany(report, { onDelete: 'cascade', onUpdate: 'cascade' });
 
-post.hasMany(comment);
-post.hasMany(reaction);
-post.hasMany(report);
+post.hasMany(comment, { onDelete: 'cascade', onUpdate: 'cascade' });
+post.hasMany(reaction, { onDelete: 'cascade', onUpdate: 'cascade' });
+post.hasMany(report, { onDelete: 'cascade', onUpdate: 'cascade' });
 post.belongsTo(user);
 
-comment.hasMany(reaction);
-comment.hasMany(report);
+comment.hasMany(reaction, { onDelete: 'cascade', onUpdate: 'cascade' });
+comment.hasMany(report, { onDelete: 'cascade', onUpdate: 'cascade' });
 comment.belongsTo(user);
 comment.belongsTo(post);
 
@@ -51,7 +51,7 @@ sequelize
   .then(async () => {
     console.log('✅ Connexion à MySQL valide');
     // Synchronisation des models avec les tables dans la base de données
-    await sequelize.sync()
+    await sequelize.sync({ alter: true })
       .catch(() => console.log('Impossible de synchroniser les models'));
     console.log('Tous les models ont été synchronisés avec succès.');
   })

@@ -1,5 +1,5 @@
 const { promises: fs } = require('fs');
-const { Comment, User, Reaction } = require('../models');
+const { Comment, Post, User, Reaction } = require('../models');
 
 exports.createComment = async (req, res) => {
   if (typeof req.body.content !== 'string') {
@@ -38,7 +38,7 @@ exports.getAllComments = async (req, res) => {
         attributes: ['username', 'firstName', 'lastName', 'avatar'],
       },
       {
-        model: Comment,
+        model: Post,
       },
       {
         model: Reaction,
@@ -58,7 +58,7 @@ exports.getOneComment = async (req, res) => {
         attributes: ['username', 'firstName', 'lastName', 'avatar'],
       },
       {
-        model: Comment,
+        model: Post,
       },
       {
         model: Reaction,
@@ -112,10 +112,22 @@ exports.deleteComment = async (req, res) => {
   if (comment.UserId !== req.auth.UserId) {
     return res.status(403).json({ message: 'Unauthorized request' });
   }
-  const filename = comment.media.split('/images/')[1];
-  await fs.unlink(`images/${filename}`);
+
+  if (comment.media) {
+    const filename = comment.media.split('/images/')[1];
+    await fs.unlink(`images/${filename}`);
+  }
   await Comment.destroy({ where: { id: req.params.id } }).catch((error) =>
     res.status(400).json({ error }),
   );
   return res.status(200).json({ message: 'Objet supprimé !' });
 };
+
+//
+//   const filename = comment.media.split('/images/')[1];
+//   await fs.unlink(`images/${filename}`);
+//   await Comment.destroy({ where: { id: req.params.id } }).catch((error) =>
+//     res.status(400).json({ error }),
+//   );
+//   return res.status(200).json({ message: 'Objet supprimé !' });
+// };

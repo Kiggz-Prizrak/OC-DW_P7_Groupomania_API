@@ -188,6 +188,10 @@ exports.getOneUser = async (req, res) => {
         model: Reaction,
       },
     ],
+    order: [
+      [Post, 'createdAt', 'DESC'],
+      [Comment, 'createdAt', 'DESC'],
+    ],
     where: { id: req.params.id },
   }).catch((error) => res.status(404).json({ message: 'user not found' }));
   return res.status(200).json(user);
