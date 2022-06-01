@@ -13,8 +13,8 @@ exports.createReaction = async (req, res) => {
   }
 
   if (
-    typeof req.body.PostId === 'string'
-    || typeof req.body.CommentId === 'string'
+    typeof req.body.PostId === 'string' ||
+    typeof req.body.CommentId === 'string'
   ) {
     return res
       .status(400)
@@ -22,8 +22,8 @@ exports.createReaction = async (req, res) => {
   }
 
   if (
-    typeof req.body.PostId === 'number'
-    && typeof req.body.CommentId === 'number'
+    typeof req.body.PostId === 'number' &&
+    typeof req.body.CommentId === 'number'
   ) {
     return res
       .status(400)
@@ -49,7 +49,7 @@ exports.getAllReactions = async (req, res) => {
   return res.status(200).json(reaction);
 };
 
-// Get one Comment
+// Get one Reaction
 exports.getOneReaction = async (req, res) => {
   const reaction = await Reaction.findOne({
     where: { id: req.params.id },
@@ -57,7 +57,7 @@ exports.getOneReaction = async (req, res) => {
   return res.status(200).json(reaction);
 };
 
-// modify Comment
+// modify Reaction
 exports.modifyReaction = async (req, res) => {
   const reaction = await Reaction.findOne({ where: { id: req.params.id } });
   const reactionObjet = req.body;
@@ -77,21 +77,17 @@ exports.modifyReaction = async (req, res) => {
   }
 
   if (
-    typeof req.body.PostId === 'string' ||
-    typeof req.body.CommentId === 'string'
+    typeof req.body.PostId === 'string'
+    || typeof req.body.CommentId === 'string'
   ) {
-    return res
-      .status(400)
-      .json({ message: 'Please provides in valide format' });
+    return res.status(400).json({ message: 'Please provides in valide format' });
   }
 
   if (
-    typeof req.body.PostId === 'number' &&
+    typeof req.body.PostId === 'number' ||
     typeof req.body.CommentId === 'number'
   ) {
-    return res
-      .status(400)
-      .json({ message: 'please select between comment or post to react' });
+    return res.status(400).json({ message: 'please select between comment or post to react' });
   }
 
   await Reaction.update(

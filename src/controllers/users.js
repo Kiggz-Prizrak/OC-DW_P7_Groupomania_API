@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { promises: fs } = require('fs');
 const { User, Post, Comment, Reaction } = require('../models');
+const { Console } = require('console');
 
 // Création de l'user
 exports.signup = async (req, res) => {
@@ -139,9 +140,13 @@ exports.login = async (req, res) => {
   // création du token (si valide)
   return res.status(200).json({
     user,
-    token: jwt.sign({ UserId: user.id, isAdmin: user.isAdmin }, process.env.JWT_SECRET_TOKEN, {
-      expiresIn: '24h',
-    }),
+    token: jwt.sign(
+      { UserId: user.id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET_TOKEN,
+      {
+        expiresIn: '24h',
+      },
+    ),
   });
 };
 
@@ -205,20 +210,31 @@ exports.modifyUser = async (req, res) => {
     return res.status(404).json({ message: 'User not found' });
   }
 
-  const userEmailFind = await User.findOne({
-    where: { email: req.body.email },
-  });
-  if (userEmailFind) {
-    if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
-    return res.status(400).json({ message: 'email or username already used' });
+  console.log('userModifier', userModifier);
+  console.log('req.params', User.findOne({ where: { id: req.params.id } }));
+
+  if (req.body.email) {
+    const userEmailFind = await User.findOne({
+      where: { email: req.body.email },
+    });
+    if (userEmailFind) {
+      if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
+      return res
+        .status(400)
+        .json({ message: 'email or username already used' });
+    }
   }
 
-  const usernameFind = await User.findOne({
-    where: { username: req.body.username },
-  });
-  if (usernameFind) {
-    if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
-    return res.status(400).json({ message: 'email or username already used' });
+  if (req.body.username) {
+    const usernameFind = await User.findOne({
+      where: { username: req.body.username },
+    });
+    if (usernameFind) {
+      if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
+      return res
+        .status(400)
+        .json({ message: 'email or username already used' });
+    }
   }
 
   if (userModifier.id !== req.auth.UserId && !req.auth.isAdmin) {
@@ -236,12 +252,16 @@ exports.modifyUser = async (req, res) => {
     : req.body;
 
   // vérification de l'e-mail
-  if (!/^[\w\d.+-]+@[\w.-]+\.[a-z]{2,}$/.test(req.body.email)) {
+  if (
+    req.body.email &&
+    !/^[\w\d.+-]+@[\w.-]+\.[a-z]{2,}$/.test(req.body.email)
+  ) {
     if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
     return res.status(400).json({ message: 'email invalide' });
   }
   // vérification du password
   if (
+    req.body.password &&
     !/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[_.@$!%*#?&])[A-Za-z\d_.@$!%*#?&]{8,}$/.test(
       req.body.password,
     )
@@ -250,13 +270,15 @@ exports.modifyUser = async (req, res) => {
     return res.status(400).json({ message: 'mot de passe invalide' });
   }
   // cryptage du mot de passe
-  userObject.password = await bcrypt.hash(req.body.password, 10);
-  if (
-    typeof userObject.email !== 'string' ||
-    typeof userObject.password !== 'string'
-  ) {
-    if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
-    return res.status(400).json({ message: 'please provides all fields' });
+  if (req.body.password) {
+    userObject.password = await bcrypt.hash(req.body.password, 10);
+    if (
+      typeof userObject.email !== 'string' ||
+      typeof userObject.password !== 'string'
+    ) {
+      if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
+      return res.status(400).json({ message: 'please provides all fields' });
+    }
   }
 
   await User.update(
@@ -267,7 +289,10 @@ exports.modifyUser = async (req, res) => {
     const filename = userModifier.avatar.split('/images/')[1];
     await fs.unlink(`images/${filename}`);
   }
-  return res.status(200).json({ message: 'User modifié' });
+  const user = await User.findOne({
+    where: { id: req.params.id },
+  });
+  return res.status(200).json({ message: 'User modifié', user });
 };
 
 // DELETE USER
