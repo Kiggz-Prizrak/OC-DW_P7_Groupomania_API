@@ -62,7 +62,7 @@ exports.modifyReaction = async (req, res) => {
   const reaction = await Reaction.findOne({ where: { id: req.params.id } });
   const reactionObjet = req.body;
 
-  if (reaction.UserId !== req.auth.UserId) {
+  if (reaction.UserId !== req.auth.UserId && !req.auth.isAdmin) {
     return res.status(403).json({ message: 'Unauthorized request' });
   }
 
@@ -109,7 +109,7 @@ exports.deleteReaction = async (req, res) => {
     return res.status(404).json({ message: 'reaction not found' });
   }
 
-  if (reaction.UserId !== req.auth.UserId) {
+  if (reaction.UserId !== req.auth.UserId && !req.auth.isAdmin) {
     return res.status(403).json({ message: 'Unauthorized request' });
   }
   await Reaction.destroy({ where: { id: req.params.id } }).catch((error) =>

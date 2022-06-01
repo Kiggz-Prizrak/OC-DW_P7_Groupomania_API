@@ -139,7 +139,7 @@ exports.login = async (req, res) => {
   // création du token (si valide)
   return res.status(200).json({
     user,
-    token: jwt.sign({ UserId: user.id }, process.env.JWT_SECRET_TOKEN, {
+    token: jwt.sign({ UserId: user.id, isAdmin: user.isAdmin }, process.env.JWT_SECRET_TOKEN, {
       expiresIn: '24h',
     }),
   });
@@ -221,7 +221,7 @@ exports.modifyUser = async (req, res) => {
     return res.status(400).json({ message: 'email or username already used' });
   }
 
-  if (userModifier.id !== req.auth.UserId) {
+  if (userModifier.id !== req.auth.UserId && !req.auth.isAdmin) {
     if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
     return res.status(403).json({ message: 'Unauthorized request' });
   }
@@ -276,7 +276,7 @@ exports.deleteUser = async (req, res) => {
   if (user === null) {
     return res.status(404).json({ message: 'User not found' });
   }
-  if (user.id !== req.auth.UserId) {
+  if (user.id !== req.auth.UserId && !req.auth.isAdmin) {
     return res.status(401).json({ message: 'Unauthorized request' });
   }
   const filename = user.avatar.split('/images/')[1];

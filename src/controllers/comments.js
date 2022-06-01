@@ -77,7 +77,7 @@ exports.modifyComment = async (req, res) => {
     return res.status(404).json({ message: 'Post not found' });
   }
 
-  if (comment.UserId !== req.auth.UserId) {
+  if (comment.UserId !== req.auth.UserId && !req.auth.isAdmin) {
     if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
     return res.status(403).json({ message: 'Unauthorized request' });
   }
@@ -95,7 +95,7 @@ exports.modifyComment = async (req, res) => {
     { ...commentObject, id: req.params.id },
     { where: { id: req.params.id } },
   ).catch((error) => res.status(400).json({ error }));
-  if (req.files) {
+  if (req.files && post.media) {
     const filename = comment.media.split('/images/')[1];
     await fs.unlink(`images/${filename}`);
   }
@@ -109,7 +109,7 @@ exports.deleteComment = async (req, res) => {
     return res.status(404).json({ message: 'Post not found' });
   }
 
-  if (comment.UserId !== req.auth.UserId) {
+  if (comment.UserId !== req.auth.UserId && !req.auth.isAdmin) {
     return res.status(403).json({ message: 'Unauthorized request' });
   }
 
