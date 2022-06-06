@@ -153,6 +153,38 @@ exports.login = async (req, res) => {
 // Get all users
 exports.getAllUsers = async (req, res) => {
   const users = await User.findAll({
+    include: [
+      {
+        model: Post,
+        include: [
+          {
+            model: Comment,
+            include: [
+              {
+                model: Reaction,
+              },
+              {
+                model: User,
+                attributes: ['username', 'firstName', 'lastName', 'avatar'],
+              },
+            ],
+          },
+          {
+            model: Reaction,
+          },
+          {
+            model: User,
+            attributes: ['username', 'firstName', 'lastName', 'avatar'],
+          },
+        ],
+      },
+      {
+        model: Comment,
+      },
+      {
+        model: Reaction,
+      },
+    ],
     order: [['createdAt', 'DESC']],
   }).catch((error) => res.status(400).json({ message: 'bad request' }));
   return res.status(200).json(users);
