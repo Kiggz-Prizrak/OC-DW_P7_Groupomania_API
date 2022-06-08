@@ -27,5 +27,9 @@ puis lancer le server avec la commande :
     
 Server : "localhost:3000"
 
+##  Gestion de base de Données
+
+Dans la table User, créer un utilisateur en changeant la valeur "isAdmin" par "1"
+
 
 
