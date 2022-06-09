@@ -31,7 +31,13 @@ Server : "localhost:3000"
 
 ##  Gestion de base de Données
 
-Dans la table User, créer un utilisateur en changeant la valeur "isAdmin" par "1"
+Importer le fichier sql dans phpmyadmin
+
+Log de l'administrateur : 
+- email : admin@groupomania.fr
+- password : Admin.123
+
+sinon aller dans la table User, créer un utilisateur en changeant la valeur "isAdmin" par "1"
 
 
 
