@@ -134,7 +134,7 @@ exports.login = async (req, res) => {
       if (req.files) await fs.unlink(`images/${req.files.avatar[0].filename}`);
     });
   if (!valid) {
-    return res.status(401).json({ error: 'Ivalid email or password' });
+    return res.status(401).json({ error: 'Invalid email or password' });
   }
 
   // création du token (si valide)
