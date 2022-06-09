@@ -20,6 +20,8 @@ cloner le repository
 Ouvrir le dossier Backend dans le terminal puis exécuter la commande:
 
     npm install
+    
+Ouvir le fichier ".env.exemple", remplir les clés et remplacer le nom du fichier par ".en"
 
 puis lancer le server avec la commande :
 
