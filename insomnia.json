@@ -1,4 +1,3 @@
-
 {
   "openapi": "3.0.3",
   "info": {
@@ -53,7 +52,7 @@
         "requestBody": {
           "description": "",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -67,7 +66,31 @@
                   },
                   "avatar": {
                     "type": "string",
-                    "format": "url"
+                    "format": "binary"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
                   },
                   "lastName": {
                     "type": "string"
@@ -83,6 +106,7 @@
             }
           }
         },
+
         "responses": {
           "201": {
             "description": "created",
@@ -353,9 +377,11 @@
         "summary": "create user",
         "description": "User creation",
         "operationId": "createUser",
-        "security": [{
-          "jwt": []
-        }],
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
@@ -501,9 +527,11 @@
         "summary": "get all users",
         "description": "Users list",
         "operationId": "getAllUsers",
-        "security": [{
-          "jwt": []
-        }],
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -590,25 +618,29 @@
         }
       }
     },
-    "/api/users/{userId}": {
+    "/api/users/{UserId}": {
       "get": {
         "tags": ["Users"],
         "summary": "get a user",
         "description": "get user",
         "operationId": "getOneUser",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "userId",
-          "in": "path",
-          "description": "Id of user",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "UserId",
+            "in": "path",
+            "description": "Id of user",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -717,23 +749,27 @@
         "summary": "get a user",
         "description": "get user",
         "operationId": "updateUser",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "userId",
-          "in": "path",
-          "description": "Id of user",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "UserId",
+            "in": "path",
+            "description": "Id of user",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -747,7 +783,7 @@
                   },
                   "avatar": {
                     "type": "string",
-                    "format": "url"
+                    "format": "binary"
                   },
                   "lastName": {
                     "type": "string"
@@ -903,19 +939,24 @@
         "summary": "delete a user",
         "description": "delete user",
         "operationId": "deleteUser",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "userId",
-          "in": "path",
-          "description": "Id of user",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],        "responses": {
+        ],
+        "parameters": [
+          {
+            "name": "UserId",
+            "in": "path",
+            "description": "Id of user",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
+        "responses": {
           "200": {
             "description": "ok",
             "content": {
@@ -1025,35 +1066,24 @@
         "summary": "Create a post",
         "description": "Post creation",
         "operationId": "createPost",
-        "security": [{
-          "jwt": []
-        }],
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
                   "content": {
                     "type": "string"
                   },
                   "media": {
-                    "type": "string"
-                  },
-                  "createdAt": {
                     "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
+                    "format": "binary"
                   }
                 }
               }
@@ -1078,7 +1108,7 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
                         "content": {
@@ -1141,41 +1171,11 @@
         "summary": "Posts list",
         "description": "all posts",
         "operationId": "getAllPosts",
-        "security": [{
-          "jwt": []
-        }],
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
-                  "content": {
-                    "type": "string"
-                  },
-                  "media": {
-                    "type": "string"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  }
-                }
-              }
-            }
+        "security": [
+          {
+            "jwt": []
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": "ok",
@@ -1189,7 +1189,7 @@
                       "id": {
                         "type": "number"
                       },
-                      "userId": {
+                      "UserId": {
                         "type": "number"
                       },
                       "content": {
@@ -1247,25 +1247,29 @@
         }
       }
     },
-    "/api/posts/{postId}": {
+    "/api/posts/{PostId}": {
       "get": {
         "tags": ["Posts"],
         "summary": "get a post",
         "description": "get post",
         "operationId": "getOnePost",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "postId",
-          "in": "path",
-          "description": "Id of post",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "PostId",
+            "in": "path",
+            "description": "Id of post",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -1280,7 +1284,7 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
                         "content": {
@@ -1329,7 +1333,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "User not found"
+                      "example": "posts not found"
                     }
                   }
                 }
@@ -1359,45 +1363,36 @@
         "summary": "update post",
         "description": "update post",
         "operationId": "updatePost",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "postId",
-          "in": "path",
-          "description": "Id of post",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "PostId",
+            "in": "path",
+            "description": "Id of post",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
                   "content": {
                     "type": "string"
                   },
                   "media": {
-                    "type": "string"
-                  },
-                  "createdAt": {
                     "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
+                    "format": "binary"
                   }
                 }
               }
@@ -1418,7 +1413,7 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
                         "content": {
@@ -1483,23 +1478,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "User not found"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "email or username already used"
+                      "example": "Post not found"
                     }
                   }
                 }
@@ -1529,19 +1508,23 @@
         "summary": "delete a post",
         "description": "delete post",
         "operationId": "deleteOnePost",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "postId",
-          "in": "path",
-          "description": "Id of post",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "PostId",
+            "in": "path",
+            "description": "Id of post",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -1556,7 +1539,7 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
                         "content": {
@@ -1605,7 +1588,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "User not found"
+                      "example": "Post not found"
                     }
                   }
                 }
@@ -1637,38 +1620,27 @@
         "summary": "Create a comment",
         "description": "Post comment",
         "operationId": "createComment",
-        "security": [{
-          "jwt": []
-        }],
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
-                  "postId": {
+                  "PostId": {
                     "type": "number"
                   },
                   "content": {
                     "type": "string"
                   },
                   "media": {
-                    "type": "string"
-                  },
-                  "createdAt": {
                     "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
+                    "format": "binary"
                   }
                 }
               }
@@ -1693,10 +1665,10 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number"
                         },
                         "content": {
@@ -1759,44 +1731,11 @@
         "summary": "Comments list",
         "description": "all Comments",
         "operationId": "getAllComments",
-        "security": [{
-          "jwt": []
-        }],
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
-                  "postId": {
-                    "type": "number"
-                  },
-                  "content": {
-                    "type": "string"
-                  },
-                  "media": {
-                    "type": "string"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  }
-                }
-              }
-            }
+        "security": [
+          {
+            "jwt": []
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": "ok",
@@ -1810,10 +1749,10 @@
                       "id": {
                         "type": "number"
                       },
-                      "userId": {
+                      "UserId": {
                         "type": "number"
                       },
-                      "postId": {
+                      "PostId": {
                         "type": "number"
                       },
                       "content": {
@@ -1871,25 +1810,29 @@
         }
       }
     },
-    "/api/comments/{commentId}": {
+    "/api/comments/{CommentId}": {
       "get": {
         "tags": ["Comments"],
         "summary": "get a comment",
         "description": "get comment",
         "operationId": "getOneComment",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "commentId",
-          "in": "path",
-          "description": "Id of comment",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "CommentId",
+            "in": "path",
+            "description": "Id of comment",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -1904,10 +1847,10 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number"
                         },
                         "content": {
@@ -1956,7 +1899,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "User not found"
+                      "example": "Post not found"
                     }
                   }
                 }
@@ -1986,48 +1929,39 @@
         "summary": "update a comment",
         "description": "update comment",
         "operationId": "updateComment",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "commentId",
-          "in": "path",
-          "description": "Id of comment",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "CommentId",
+            "in": "path",
+            "description": "Id of comment",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
-                  "postId": {
+                  "PostId": {
                     "type": "number"
                   },
                   "content": {
                     "type": "string"
                   },
                   "media": {
-                    "type": "string"
-                  },
-                  "createdAt": {
                     "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
+                    "format": "binary"
                   }
                 }
               }
@@ -2048,7 +1982,7 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
                         "content": {
@@ -2113,23 +2047,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "User not found"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "email or username already used"
+                      "example": "Post not found"
                     }
                   }
                 }
@@ -2159,19 +2077,23 @@
         "summary": "delete a comment",
         "description": "delete comment",
         "operationId": "deleteComment",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "commentId",
-          "in": "path",
-          "description": "Id of comment",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "CommentId",
+            "in": "path",
+            "description": "Id of comment",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -2186,10 +2108,10 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number"
                         },
                         "content": {
@@ -2270,9 +2192,11 @@
         "summary": "Create a reaction",
         "description": "Post reaction",
         "operationId": "addReaction",
-        "security": [{
-          "jwt": []
-        }],
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
@@ -2280,30 +2204,16 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
-                  "postId": {
+                  "PostId": {
                     "type": "number",
                     "nullable": true
                   },
-                  "commentId": {
+                  "CommentId": {
                     "type": "number",
                     "nullable": true
                   },
                   "type": {
                     "type": "string"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
                   }
                 }
               }
@@ -2328,14 +2238,14 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number",
                           "nullable": true
                         },
-                        "commentId": {
+                        "CommentId": {
                           "type": "number",
                           "nullable": true
                         },
@@ -2396,46 +2306,11 @@
         "summary": "reactions list",
         "description": "all reactions",
         "operationId": "getAllReactions",
-        "security": [{
-          "jwt": []
-        }],
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
-                  "postId": {
-                    "type": "number",
-                    "nullable": true
-                  },
-                  "commentId": {
-                    "type": "number",
-                    "nullable": true
-                  },
-                  "type": {
-                    "type": "string"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  }
-                }
-              }
-            }
+        "security": [
+          {
+            "jwt": []
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": "ok",
@@ -2449,14 +2324,14 @@
                       "id": {
                         "type": "number"
                       },
-                      "userId": {
+                      "UserId": {
                         "type": "number"
                       },
-                      "postId": {
+                      "PostId": {
                         "type": "number",
                         "nullable": true
                       },
-                      "commentId": {
+                      "CommentId": {
                         "type": "number",
                         "nullable": true
                       },
@@ -2512,25 +2387,29 @@
         }
       }
     },
-    "/api/reactions/{reactionId}": {
+    "/api/reactions/{ReactionId}": {
       "get": {
         "tags": ["Reactions"],
         "summary": "get a reaction",
         "description": "get reaction",
         "operationId": "getOneReaction",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "reactionId",
-          "in": "path",
-          "description": "Id of reaction",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "ReactionId",
+            "in": "path",
+            "description": "Id of reaction",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -2545,14 +2424,14 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number",
                           "nullable": true
                         },
-                        "commentId": {
+                        "CommentId": {
                           "type": "number",
                           "nullable": true
                         },
@@ -2629,19 +2508,23 @@
         "summary": "update a reaction",
         "description": "update reaction",
         "operationId": "updateReaction",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "reactionId",
-          "in": "path",
-          "description": "Id of reaction",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "ReactionId",
+            "in": "path",
+            "description": "Id of reaction",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
@@ -2649,30 +2532,16 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
-                  "postId": {
+                  "PostId": {
                     "type": "number",
                     "nullable": true
                   },
-                  "commentId": {
+                  "CommentId": {
                     "type": "number",
                     "nullable": true
                   },
                   "type": {
                     "type": "string"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
                   }
                 }
               }
@@ -2693,14 +2562,14 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number",
                           "nullable": true
                         },
-                        "commentId": {
+                        "CommentId": {
                           "type": "number",
                           "nullable": true
                         },
@@ -2809,19 +2678,23 @@
         "summary": "delete a reaction",
         "description": "delete reaction",
         "operationId": "deleteReaction",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "reactionId",
-          "in": "path",
-          "description": "Id of reaction",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "ReactionId",
+            "in": "path",
+            "description": "Id of reaction",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -2836,14 +2709,14 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number",
                           "nullable": true
                         },
-                        "commentId": {
+                        "CommentId": {
                           "type": "number",
                           "nullable": true
                         },
@@ -2918,13 +2791,15 @@
     },
     "/api/reports": {
       "post": {
-        "tags": ["reports"],
+        "tags": ["Reports"],
         "summary": "Create a reports",
         "description": "Post reports",
         "operationId": "createReport",
-        "security": [{
-          "jwt": []
-        }],
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
@@ -2932,27 +2807,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
-                  "postId": {
+                  "PostId": {
                     "type": "number",
                     "nullable": true
                   },
-                  "commentId": {
+                  "CommentId": {
                     "type": "number",
                     "nullable": true
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
                   }
                 }
               }
@@ -2977,14 +2838,14 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number",
                           "nullable": true
                         },
-                        "commentId": {
+                        "CommentId": {
                           "type": "number",
                           "nullable": true
                         },
@@ -3038,47 +2899,15 @@
         }
       },
       "get": {
-        "tags": ["reports"],
+        "tags": ["Reports"],
         "summary": "reports list",
         "description": "all reports",
         "operationId": "getAllReports",
-        "security": [{
-          "jwt": []
-        }],
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
-                  "postId": {
-                    "type": "number",
-                    "nullable": true
-                  },
-                  "commentId": {
-                    "type": "number",
-                    "nullable": true
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  }
-                }
-              }
-            }
+        "security": [
+          {
+            "jwt": []
           }
-        },
+        ],
         "responses": {
           "201": {
             "description": "ok",
@@ -3092,14 +2921,14 @@
                       "id": {
                         "type": "number"
                       },
-                      "userId": {
+                      "UserId": {
                         "type": "number"
                       },
-                      "postId": {
+                      "PostId": {
                         "type": "number",
                         "nullable": true
                       },
-                      "commentId": {
+                      "CommentId": {
                         "type": "number",
                         "nullable": true
                       },
@@ -3152,25 +2981,29 @@
         }
       }
     },
-    "/api/reports/{reportId}": {
+    "/api/reports/{ReportId}": {
       "get": {
-        "tags": ["reports"],
+        "tags": ["Reports"],
         "summary": "get a report",
         "description": "get report",
         "operationId": "getOneReport",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "reportId",
-          "in": "path",
-          "description": "Id of report",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "ReportId",
+            "in": "path",
+            "description": "Id of report",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -3185,14 +3018,14 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number",
                           "nullable": true
                         },
-                        "commentId": {
+                        "CommentId": {
                           "type": "number",
                           "nullable": true
                         },
@@ -3262,23 +3095,27 @@
         }
       },
       "put": {
-        "tags": ["reports"],
+        "tags": ["Reports"],
         "summary": "update a report",
         "description": "update report",
         "operationId": "updateReport",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "reportId",
-          "in": "path",
-          "description": "Id of report",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "ReportId",
+            "in": "path",
+            "description": "Id of report",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
@@ -3286,27 +3123,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "userId": {
-                    "type": "number"
-                  },
-                  "postId": {
+                  "PostId": {
                     "type": "number",
                     "nullable": true
                   },
-                  "commentId": {
+                  "CommentId": {
                     "type": "number",
                     "nullable": true
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "datetime"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "datetime"
                   }
                 }
               }
@@ -3327,14 +3150,14 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number",
                           "nullable": true
                         },
-                        "commentId": {
+                        "CommentId": {
                           "type": "number",
                           "nullable": true
                         },
@@ -3436,23 +3259,27 @@
         }
       },
       "delete": {
-        "tags": ["reports"],
+        "tags": ["Reports"],
         "summary": "delete a report",
         "description": "delete report",
         "operationId": "deleteReport",
-        "security": [{
-          "jwt": []
-        }],
-        "parameters": [{
-          "name": "reportId",
-          "in": "path",
-          "description": "Id of report",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "example": 117
+        "security": [
+          {
+            "jwt": []
           }
-        }],
+        ],
+        "parameters": [
+          {
+            "name": "ReportId",
+            "in": "path",
+            "description": "Id of report",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 117
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -3467,14 +3294,14 @@
                         "id": {
                           "type": "number"
                         },
-                        "userId": {
+                        "UserId": {
                           "type": "number"
                         },
-                        "postId": {
+                        "PostId": {
                           "type": "number",
                           "nullable": true
                         },
-                        "commentId": {
+                        "CommentId": {
                           "type": "number",
                           "nullable": true
                         },

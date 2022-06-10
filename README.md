@@ -1,43 +1,52 @@
 # P7-Groupomania-API
 
-## Lien du front :
-- https://github.com/Kiggz-Prizrak/P7-Groupomania-Front
+Lien du front : backend link: [frontend repository](https://github.com/Kiggz-Prizrak/P7-Groupomania-Front)
 
-## dépendances 
-Pour installer ce projet veuillez vous procurer 
+## Dépendances
+
+Pour installer ce projet veuillez vous procurer
+
 - Node.js
 - MySQL
-- bcrypt
-- sequelize
-- jsonwebtoken
-- multer
-- dotenv
 
-##  configuration du Backend
+## Configuration du Backend
 
-cloner le repository 
+cloner le repository
+
+```bash
+git clone
+```
 
 Ouvrir le dossier Backend dans le terminal puis exécuter la commande:
 
-    npm install
-    
-Ouvir le fichier ".env.exemple", remplir les clés et remplacer le nom du fichier par ".en"
+```bash
+npm install
+```
+
+Dupliquer le fichier `.env.exemple`, renommer le fichier dupliqué en `.env`
 
 puis lancer le server avec la commande :
 
-    npm start ou nodemon serve
-    
-Server : "localhost:3000"
+```bash
+  npm start
+```
 
-##  Gestion de base de Données
+ou
 
-Importer le fichier sql dans phpmyadmin
+```bash
+  nodemon server
+```
+[la documentation de l'API](https://github.com/Kiggz-Prizrak/P7-Groupomania-API/blob/main/insomnia.json)
 
-Log de l'administrateur : 
+L'API sera disponible sur [localhost:3000](http://localhost:3000)
+
+## Gestion de base de Données
+
+Importer le fichier [database.sql](https://github.com/Kiggz-Prizrak/P7-Groupomania-API/blob/main/database.sql) dans phpmyadmin
+
+Log de l'administrateur :
+
 - email : admin@groupomania.fr
 - password : Admin.123
 
 sinon aller dans la table User, créer un utilisateur en changeant la valeur "isAdmin" par "1"
-
-
-

@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     // const { UserId } = decodedToken;
 
     req.auth = decodedToken;
-    next();
+    next();G
 
     // req.auth = { UserId };
     // if (req.body.UserId && req.body.UserId !== UserId) {
